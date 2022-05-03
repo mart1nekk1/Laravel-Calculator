@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Calculator;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class CalculatorController extends Controller
 {
@@ -24,13 +26,21 @@ class CalculatorController extends Controller
     *
     * @param  Calculator $calculator
     * @return View
+    *
+    * @throws ValidationException
     */
     public function calculate(Calculator $calculator): View
     {
+        $this->validate(request(), [
+            'a' => ['required', 'integer'],
+            'b' => ['required', 'integer', 'not_in:0'],
+            'operation' => [
+                'required',
+                Rule::in(array_keys($calculator->getOperations())),
+            ],
+        ]);
+    
         $a = request()->input('a');
-        $b = request()->input('b');
-        $operation = request()->input('operation');
-        $result = $calculator->calculate($operation, $a, $b);
 
         return view('calculator', [
             'operations' => $calculator->getOperations(),
