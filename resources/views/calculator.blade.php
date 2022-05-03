@@ -8,6 +8,8 @@
         <h1>Kalkulačka</h1>
 
         <form method="POST" action="/calculator">
+            @csrf
+    
             Operace:
             <select name="operation">
                 @foreach ($operations as $operation => $text)

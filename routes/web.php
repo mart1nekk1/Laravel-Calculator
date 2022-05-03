@@ -19,3 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('calculator', [CalculatorController::class, 'index']);
+
+Route::post('calculator', [CalculatorController::class, 'calculate']);
